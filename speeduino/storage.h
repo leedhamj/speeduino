@@ -12,6 +12,8 @@ void writeCalibration();
 //These are utility functions that prevent other files from having to use EEPROM.h directly
 byte readLastBaro();
 void storeLastBaro(byte);
+byte readLastIdle();
+void storeLastIdle(byte);
 void storeCalibrationValue(uint16_t, byte);
 byte readEEPROMVersion();
 void storeEEPROMVersion(byte);
@@ -71,6 +73,7 @@ Current layout of EEPROM data (Version 3) is as follows (All sizes are in bytes)
 | 1692  |192  | Table 11 - General settings         |
 |                                                   |
 | 2514  |44   | Table CRC32 values. Last table first|
+| 2557  |1    | Last recorded Idle value            |
 | 2558  |1    | Last recorded Baro value            |
 | 2559  |512  | Calibration data (O2)               |
 | 3071  |512  | Calibration data (IAT)              |
@@ -152,6 +155,7 @@ Current layout of EEPROM data (Version 3) is as follows (All sizes are in bytes)
 
 //Calibration data is stored at the end of the EEPROM (This is in case any further calibration tables are needed as they are large blocks)
 #define EEPROM_PAGE_CRC32     2514 //Size of this is 4 * <number of pages> (CRC32 = 32 bits)
+#define EEPROM_LAST_IDLE      2557
 #define EEPROM_LAST_BARO      2558
 #define EEPROM_CALIBRATION_O2 2559
 #define EEPROM_CALIBRATION_IAT 3071

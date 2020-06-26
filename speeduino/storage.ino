@@ -746,3 +746,5 @@ void storeLastBaro(byte newValue) { EEPROM.update(EEPROM_LAST_BARO, newValue); }
 void storeCalibrationValue(uint16_t location, byte value) { EEPROM.update(location, value); } //This is essentially just an abstraction for EEPROM.update()
 byte readEEPROMVersion() { return EEPROM.read(EEPROM_DATA_VERSION); }
 void storeEEPROMVersion(byte newVersion) { EEPROM.update(EEPROM_DATA_VERSION, newVersion); }
+byte readLastIdle() { return EEPROM.read(EEPROM_LAST_IDLE); }
+void storeLastIdle(byte newValue) { EEPROM.update(EEPROM_LAST_IDLE, newValue); }

@@ -116,6 +116,9 @@ void loop()
     else
     {
       //We reach here if the time between teeth is too great. This VERY likely means the engine has stopped
+//      if(1==1 || currentStatus.runSecs>20) { // Only store if engine has been running before this
+//        storeLastIdleIfChanged();
+//      }
       currentStatus.RPM = 0;
       currentStatus.PW1 = 0;
       currentStatus.VE = 0;
@@ -145,7 +148,7 @@ void loop()
       //It can possibly be run much less frequently.
       //This should only be run if the high speed logger are off because it will change the trigger interrupts back to defaults rather than the logger versions
       if( (currentStatus.toothLogEnabled == false) && (currentStatus.compositeLogEnabled == false) ) { initialiseTriggers(); }
-
+      
       VVT_PIN_LOW();
       DISABLE_VVT_TIMER();
       boostDisable();
@@ -246,7 +249,7 @@ void loop()
       readBat();
       nitrousControl();
       idleControl(); //Perform any idle related actions. Even at higher frequencies, running 4x per second is sufficient.
-
+      CheckEngineLightControl();
       if(eepromWritesPending == true) { writeAllConfig(); } //Check for any outstanding EEPROM writes.
 
       if(auxIsEnabled == true)

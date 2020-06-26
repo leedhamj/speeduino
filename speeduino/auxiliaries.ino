@@ -56,6 +56,47 @@ void fanControl()
   }
 }
 
+void initialiseCheckEngineLight()
+{
+currentStatus.checkEngineLightOn=true;
+pinMode(pinCEL,OUTPUT);
+digitalWrite(pinCEL, LOW);
+}
+
+
+void CheckEngineLightControl()
+{
+bool celTempStatus=false;
+
+if (!initialisationComplete) {
+  return;
+}
+
+if (currentStatus.coolant<-10 || currentStatus.coolant>130) {
+  celTempStatus=true;
+}
+if (currentStatus.tpsADC<5 || currentStatus.tpsADC>250) {
+  celTempStatus=true;  
+}
+if (currentStatus.IAT>100 || currentStatus.IAT<-30) {
+  celTempStatus=true;  
+}
+if ((currentStatus.O2ADC<5) || (currentStatus.O2ADC)>1000) {
+  celTempStatus=true;
+}
+
+if (celTempStatus!=currentStatus.checkEngineLightOn) {
+   if (celTempStatus) {
+      digitalWrite(pinCEL, LOW);
+   } else {
+      digitalWrite(pinCEL, HIGH);
+   }
+currentStatus.checkEngineLightOn=celTempStatus;
+  
+}
+  
+}
+
 void initialiseAuxPWM()
 {
   boost_pin_port = portOutputRegister(digitalPinToPort(pinBoost));

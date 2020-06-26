@@ -10,8 +10,8 @@
   #define LED_BUILTIN 13
   #define CORE_AVR
   #define BOARD_H "board_avr2560.h"
-  #define INJ_CHANNELS 4
-  #define IGN_CHANNELS 5
+  #define INJ_CHANNELS 1
+  #define IGN_CHANNELS 2
 
   //#define TIMER5_MICROS
 
@@ -246,7 +246,7 @@
 #define FOUR_STROKE         0
 #define TWO_STROKE          1
 
-#define MAX_RPM 18000 //This is the maximum rpm that the ECU will attempt to run at. It is NOT related to the rev limiter, but is instead dictates how fast certain operations will be allowed to run. Lower number gives better performance
+#define MAX_RPM 8000 //This is the maximum rpm that the ECU will attempt to run at. It is NOT related to the rev limiter, but is instead dictates how fast certain operations will be allowed to run. Lower number gives better performance
 
 #define BATTV_COR_MODE_WHOLE 0
 #define BATTV_COR_MODE_OPENTIME 1
@@ -507,6 +507,7 @@ struct statuses {
   long vvtAngle;
   byte vvtTargetAngle;
   byte vvtDuty;
+  bool checkEngineLightOn;
 
 };
 
@@ -1075,6 +1076,7 @@ extern byte pinBoost;
 extern byte pinVVT_1;		// vvt output 1
 extern byte pinVVT_2;		// vvt output 2
 extern byte pinFan;       // Cooling fan output
+extern byte pinCEL;       // CheckEngine Light output
 extern byte pinStepperDir; //Direction pin for the stepper motor driver
 extern byte pinStepperStep; //Step pin for the stepper motor driver
 extern byte pinStepperEnable; //Turning the DRV8825 driver on/off

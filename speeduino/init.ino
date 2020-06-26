@@ -227,6 +227,7 @@ void initialiseAll()
     //initialiseDisplay();
     initialiseIdle();
     initialiseFan();
+    initialiseCheckEngineLight();
     initialiseAuxPWM();
     initialiseCorrections();
     initialiseADC();
@@ -928,9 +929,9 @@ void setPinMapping(byte boardID)
     case 0:
     #ifndef SMALL_FLASH_MODE //No support for bluepill here anyway
       //Pin mappings as per the v0.1 shield
-      pinInjector1 = 8; //Output pin injector 1 is on
+      pinInjector1 = 11; //Output pin injector 1 is on   // Switch Injector 1 and 3 on my board
       pinInjector2 = 9; //Output pin injector 2 is on
-      pinInjector3 = 11; //Output pin injector 3 is on
+      pinInjector3 = 8; //Output pin injector 3 is on
       pinInjector4 = 10; //Output pin injector 4 is on
       pinInjector5 = 12; //Output pin injector 5 is on
       pinCoil1 = 6; //Pin for coil 1
@@ -950,6 +951,7 @@ void setPinMapping(byte boardID)
       pinStepperDir = 16; //Direction pin  for DRV8825 driver
       pinStepperStep = 17; //Step pin for DRV8825 driver
       pinFan = 47; //Pin for the fan output
+      pinCEL = 47;
       pinFuelPump = 4; //Fuel pump output
       pinTachOut = 49; //Tacho output pin
       pinFlex = 19; // Flex sensor (Must be external interrupt enabled)
@@ -1041,9 +1043,9 @@ void setPinMapping(byte boardID)
 
     case 3:
       //Pin mappings as per the v0.4 shield
-      pinInjector1 = 8; //Output pin injector 1 is on
+      pinInjector1 = 10; //Output pin injector 1 is on
       pinInjector2 = 9; //Output pin injector 2 is on
-      pinInjector3 = 10; //Output pin injector 3 is on
+      pinInjector3 = 8; //Output pin injector 3 is on
       pinInjector4 = 11; //Output pin injector 4 is on
       pinInjector5 = 12; //Output pin injector 5 is on
       pinInjector6 = 50; //CAUTION: Uses the same as Coil 4 below. 
@@ -1071,6 +1073,7 @@ void setPinMapping(byte boardID)
       pinStepperStep = 17; //Step pin for DRV8825 driver
       pinStepperEnable = 24; //Enable pin for DRV8825
       pinFan = 47; //Pin for the fan output (Goes to ULN2803)
+      pinCEL = 5; // Use the 2 wire idle control pin
       pinLaunch = 51; //Can be overwritten below
       pinFlex = 2; // Flex sensor (Must be external interrupt enabled)
       pinResetControl = 43; //Reset control output
