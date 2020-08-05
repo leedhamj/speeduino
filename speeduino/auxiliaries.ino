@@ -60,7 +60,7 @@ void initialiseCheckEngineLight()
 {
 currentStatus.checkEngineLightOn=true;
 pinMode(pinCEL,OUTPUT);
-digitalWrite(pinCEL, LOW);
+digitalWrite(pinCEL, HIGH);
 }
 
 
@@ -72,24 +72,39 @@ if (!initialisationComplete) {
   return;
 }
 
-if (currentStatus.coolant<-10 || currentStatus.coolant>130) {
+
+  if (( completedHomeSteps < (configPage6.iacStepHome * 3) ) || (idleStepper.targetIdleStep <= (idleStepper.curIdleStep - configPage6.iacStepHyster)) || (idleStepper.targetIdleStep >= (idleStepper.curIdleStep + configPage6.iacStepHyster)) ) //Hysteris check
+  {
+    if(!BIT_CHECK(currentStatus.engine, BIT_ENGINE_RUN)) {
+      celTempStatus=true;
+      
+    }
+    // Check first, in case change would overwrite
+    
+  }
+
+if (currentStatus.coolant<-10 || currentStatus.coolant>130 || (currentStatus.coolant==82 && !BIT_CHECK(currentStatus.engine, BIT_ENGINE_RUN))) {
   celTempStatus=true;
 }
 if (currentStatus.tpsADC<5 || currentStatus.tpsADC>250) {
   celTempStatus=true;  
 }
-if (currentStatus.IAT>100 || currentStatus.IAT<-30) {
+if (currentStatus.IAT>80 || currentStatus.IAT<-12) {
   celTempStatus=true;  
 }
 if ((currentStatus.O2ADC<5) || (currentStatus.O2ADC)>1000) {
   celTempStatus=true;
 }
 
+
+// Also do Baro correction multipler
+// Lack of Sync
+
 if (celTempStatus!=currentStatus.checkEngineLightOn) {
    if (celTempStatus) {
-      digitalWrite(pinCEL, LOW);
-   } else {
       digitalWrite(pinCEL, HIGH);
+   } else {
+      digitalWrite(pinCEL, LOW);
    }
 currentStatus.checkEngineLightOn=celTempStatus;
   
