@@ -37,6 +37,8 @@ struct table2D flexAdvTable;   //6 bin flex fuel correction table for timing adv
 struct table2D flexBoostTable; //6 bin flex fuel correction table for boost adjustments (2D)
 struct table2D knockWindowStartTable;
 struct table2D knockWindowDurationTable;
+struct table2D physicalTempGaugeTable; // 4 bin calibration for external Temp Gauge
+
 
 //These are for the direct port manipulation of the injectors, coils and aux outputs
 volatile PORT_TYPE *inj1_pin_port;
@@ -187,6 +189,7 @@ byte pinVVT_1;		// vvt output 1
 byte pinVVT_2;		// vvt output 2
 byte pinFan;       // Cooling fan output
 byte pinCEL;       // Check Engine Light
+byte pinTempGauge; // Physical temperature gauge
 byte pinStepperDir; //Direction pin for the stepper motor driver
 byte pinStepperStep; //Step pin for the stepper motor driver
 byte pinStepperEnable; //Turning the DRV8825 driver on/off

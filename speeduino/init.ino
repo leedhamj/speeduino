@@ -16,6 +16,9 @@
 #include "table.h"
 #include BOARD_H //Note that this is not a real file, it is defined in globals.h. 
 
+const byte physicalGaugeXAxis[4] = {96, 120, 188, 202}; // Add 100 to remove need to support negative numbers 90 = -10 etc.
+const byte physicalGaugeValues[4] = {4, 8, 40, 104};
+
 void initialiseAll()
 {   
     fpPrimed = false;
@@ -176,6 +179,15 @@ void initialiseAll()
     knockWindowDurationTable.values = configPage10.knock_window_dur;
     knockWindowDurationTable.axisX = configPage10.knock_window_rpms;
 
+    physicalTempGaugeTable.valueSize = SIZE_BYTE;
+    physicalTempGaugeTable.axisSize = SIZE_BYTE;
+    physicalTempGaugeTable.xSize = 4;
+
+    
+    physicalTempGaugeTable.axisX = (void *)physicalGaugeXAxis;
+    physicalTempGaugeTable.values = (void *)physicalGaugeValues;
+
+    
     //Setup the calibration tables
     loadCalibration();
 
@@ -230,6 +242,7 @@ void initialiseAll()
     initialiseIdle();
     initialiseFan();
     initialiseCheckEngineLight();
+    initialisePhysicalGauge();
     initialiseAuxPWM();
     initialiseCorrections();
     initialiseADC();
@@ -1053,8 +1066,8 @@ void setPinMapping(byte boardID)
       pinInjector6 = 50; //CAUTION: Uses the same as Coil 4 below. 
       pinCoil1 = 40; //Pin for coil 1
       pinCoil2 = 38; //Pin for coil 2
-      pinCoil3 = 52; //Pin for coil 3
-      pinCoil4 = 50; //Pin for coil 4
+      pinCoil3 = 45;// 52; //Pin for coil 3
+      pinCoil4 = 48;// 50; //Pin for coil 4
       pinCoil5 = 34; //Pin for coil 5 PLACEHOLDER value for now
       pinTrigger = 19; //The CAS pin
       pinTrigger2 = 18; //The Cam Sensor pin
@@ -1075,7 +1088,8 @@ void setPinMapping(byte boardID)
       pinStepperStep = 17; //Step pin for DRV8825 driver
       pinStepperEnable = 24; //Enable pin for DRV8825
       pinFan = 47; //Pin for the fan output (Goes to ULN2803)
-      pinCEL = 5; // Use the 2 wire idle control pin
+      pinCEL = 52; // Use the 2coill 3 pin
+      pinTempGauge = 6; // Use the other 2 wire idle control pin
       pinLaunch = 51; //Can be overwritten below
       pinFlex = 2; // Flex sensor (Must be external interrupt enabled)
       pinResetControl = 43; //Reset control output

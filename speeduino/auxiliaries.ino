@@ -60,7 +60,7 @@ void initialiseCheckEngineLight()
 {
 currentStatus.checkEngineLightOn=true;
 pinMode(pinCEL,OUTPUT);
-digitalWrite(pinCEL, HIGH);
+digitalWrite(pinCEL, LOW);
 }
 
 
@@ -83,6 +83,8 @@ if (!initialisationComplete) {
     
   }
 
+// TODO Check AFR (reads 10.8 while running if not connected?)
+
 if (currentStatus.coolant<-10 || currentStatus.coolant>130 || (currentStatus.coolant==82 && !BIT_CHECK(currentStatus.engine, BIT_ENGINE_RUN))) {
   celTempStatus=true;
 }
@@ -98,19 +100,44 @@ if ((currentStatus.O2ADC<5) || (currentStatus.O2ADC)>1000) {
 
 
 // Also do Baro correction multipler
-// Lack of Sync
 
 if (celTempStatus!=currentStatus.checkEngineLightOn) {
    if (celTempStatus) {
-      digitalWrite(pinCEL, HIGH);
-   } else {
       digitalWrite(pinCEL, LOW);
+   } else {
+      digitalWrite(pinCEL, HIGH);
    }
 currentStatus.checkEngineLightOn=celTempStatus;
   
 }
   
 }
+
+int tempGaugeStep;
+int tempGaugeDirection;
+
+void initialisePhysicalGauge() {
+  tempGaugeStep=0;
+  tempGaugeDirection=4;
+  pinMode(pinTempGauge,OUTPUT);
+  digitalWrite(pinTempGauge, HIGH);
+}
+
+void PhysicalGaugeControl() {
+
+  if (tempGaugeStep>table2D_getValue(&physicalTempGaugeTable, currentStatus.coolant+100)>>2) {
+    tempGaugeDirection=-1;
+  }
+  if ( tempGaugeStep<-26) { //+100 for table in unsigned bytes
+    tempGaugeDirection=1;
+  }
+
+  if (tempGaugeStep==0) {
+    digitalWrite(pinTempGauge, tempGaugeDirection>0 ? HIGH : LOW);
+  }
+  tempGaugeStep += tempGaugeDirection;
+}
+
 
 void initialiseAuxPWM()
 {

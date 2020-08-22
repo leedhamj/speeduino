@@ -11,7 +11,10 @@ void vvtControl();
 void initialiseFan();
 void nitrousControl();
 void fanControl();
+void initialiseCheckEngineLight();
 void CheckEngineLightControl();
+void initialisePhysicalGauage();
+void PhysicalGaugeControl();
 
 #define SIMPLE_BOOST_P  1
 #define SIMPLE_BOOST_I  1
